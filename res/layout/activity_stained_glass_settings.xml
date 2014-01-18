@@ -1,0 +1,18 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/settingsActivityLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".StainedGlassSettingsActivity"
+    tools:ignore="MergeRootFrame" 
+    android:contentDescription="@string/settings_name">
+
+    <LinearLayout
+        android:id="@+id/settingsTopLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+    </LinearLayout>
+
+</FrameLayout>

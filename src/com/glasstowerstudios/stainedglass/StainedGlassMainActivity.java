@@ -1,7 +1,7 @@
 package com.glasstowerstudios.stainedglass;
 
 import android.app.*;
-import android.content.DialogInterface;
+import android.content.*;
 import android.os.*;
 import android.support.v4.app.*;
 import android.util.Log;
@@ -16,8 +16,9 @@ public class StainedGlassMainActivity extends FragmentActivity implements
 
   private static final int NOTIFICATION_ID = 1730;
   private static final int LED_TIME_ON = 10000;
+  private static final int LED_DELAY = 2000;
 
-  Runnable mClearLEDTask = new Runnable() {
+  private Runnable mClearLEDTask = new Runnable() {
 
     @Override
     public void run() {
@@ -27,7 +28,18 @@ public class StainedGlassMainActivity extends FragmentActivity implements
     }
   };
 
-  Handler mLedHandler = new Handler();
+  private Runnable mRunLEDTask = new Runnable() {
+
+    @Override
+    public void run() {
+      synchronized(StainedGlassMainActivity.this) {
+        setLEDColor(255, 0, 0);
+        mLedHandler.postDelayed(mClearLEDTask, LED_TIME_ON);
+      }
+    }
+  };
+
+  private Handler mLedHandler = new Handler();
 
   /**
    * The serialization (saved instance state) Bundle key representing the
@@ -50,7 +62,7 @@ public class StainedGlassMainActivity extends FragmentActivity implements
     // Specify a SpinnerAdapter to populate the dropdown list.
     new ArrayAdapter<String>(actionBar.getThemedContext(),
         android.R.layout.simple_list_item_1, android.R.id.text1, new String[] {
-            getString(R.string.title_section1) }), this);
+            getString(R.string.home_section) }), this);
 
     setupButtonHandler();
   }
@@ -64,12 +76,11 @@ public class StainedGlassMainActivity extends FragmentActivity implements
         new AlertDialog.Builder(v.getContext(), AlertDialog.THEME_DEVICE_DEFAULT_DARK)
         .setCancelable(false)
         .setTitle("Confirm")
-        .setMessage("Are you sure you want to turn on the LED?")
+        .setMessage("Are you sure you want to turn on the LED? (LED will not turn on if screen is on, LED notification will be sent in " + (int)(LED_DELAY/1000f) + " seconds)")
         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-              setLEDColor(255, 0, 0);
-              mLedHandler.postDelayed(mClearLEDTask, LED_TIME_ON);
+              mLedHandler.postDelayed(mRunLEDTask, LED_DELAY);
               dialogInterface.dismiss();
             }
         })
@@ -113,6 +124,11 @@ public class StainedGlassMainActivity extends FragmentActivity implements
   public boolean onCreateOptionsMenu(Menu menu) {
     // Inflate the menu; this adds items to the action bar if it is present.
     getMenuInflater().inflate(R.menu.stained_glass_main, menu);
+
+    Intent loadSettingsIntent = new Intent(this, StainedGlassSettingsActivity.class);
+    MenuItem settingsMenuItem = menu.findItem(R.id.settings_menu_id);
+    settingsMenuItem.setIntent(loadSettingsIntent);
+
     return true;
   }
 
@@ -132,12 +148,6 @@ public class StainedGlassMainActivity extends FragmentActivity implements
   private void clearLED() {
     Log.d(LOGTAG, "Clearing LED notification request #" + NOTIFICATION_ID);
     NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-    Notification notif = new Notification();
-    notif.ledARGB = 0x00000000; //Color.rgb(red, green, blue);
-    notif.flags = Notification.FLAG_SHOW_LIGHTS;
-    notif.ledOnMS = 0;
-    notif.ledOffMS = 0;
-    nm.notify(NOTIFICATION_ID, notif);
     nm.cancel(NOTIFICATION_ID);
   }
 
