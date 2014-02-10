@@ -10,28 +10,31 @@
         android:id="@+id/topLevelLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:gravity="fill_vertical">
 
         <TextView
             android:id="@+id/colorPickerTitle"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.16"
-            android:text="@string/color_picker_title_text"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-<!--         <LinearLayout
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.16" >
-        </LinearLayout> -->
+            android:text="@string/color_picker_title_text"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="16pt"
+            />
+
+        <com.larswerkman.holocolorpicker.ColorPicker
+            android:id="@+id/picker"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.59"
+            />
 
         <Button
             android:id="@+id/turnOnLedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/turn_on_led" />
-
+            android:text="@string/turn_on_led"
+            />
     </LinearLayout>
 
 </FrameLayout>

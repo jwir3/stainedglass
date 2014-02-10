@@ -2,12 +2,14 @@ package com.glasstowerstudios.stainedglass;
 
 import android.app.*;
 import android.content.*;
+import android.graphics.Color;
 import android.os.*;
 import android.support.v4.app.*;
 import android.util.Log;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.*;
+import com.larswerkman.holocolorpicker.*;
 
 public class StainedGlassMainActivity extends FragmentActivity implements
     ActionBar.OnNavigationListener {
@@ -15,8 +17,9 @@ public class StainedGlassMainActivity extends FragmentActivity implements
   private static final String LOGTAG = "StainedGlassMainActivity";
 
   private static final int NOTIFICATION_ID = 1730;
-  private static final int LED_TIME_ON = 10000;
   private static final int LED_DELAY = 2000;
+
+  private int mLEDColor;
 
   private Runnable mClearLEDTask = new Runnable() {
 
@@ -33,8 +36,12 @@ public class StainedGlassMainActivity extends FragmentActivity implements
     @Override
     public void run() {
       synchronized(StainedGlassMainActivity.this) {
-        setLEDColor(255, 0, 0);
-        mLedHandler.postDelayed(mClearLEDTask, LED_TIME_ON);
+        refreshFromPreferences();
+        int red = Color.red(mLEDColor);
+        int green = Color.green(mLEDColor);
+        int blue = Color.blue(mLEDColor);
+        setLEDColor(red, green, blue);
+        mLedHandler.postDelayed(mClearLEDTask, mTotalFlashLength);
       }
     }
   };
@@ -73,6 +80,8 @@ public class StainedGlassMainActivity extends FragmentActivity implements
     btnTurnOnLed.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
+        ColorPicker picker = (ColorPicker)findViewById(R.id.picker);
+        mLEDColor = picker.getColor();
         new AlertDialog.Builder(v.getContext(), AlertDialog.THEME_DEVICE_DEFAULT_DARK)
         .setCancelable(false)
         .setTitle("Confirm")
@@ -159,19 +168,20 @@ public class StainedGlassMainActivity extends FragmentActivity implements
   }
 
   private void setLEDColor(int red, int green, int blue) {
+    refreshFromPreferences();
+
     NotificationCompat.Builder mBuilder =
-        new NotificationCompat.Builder(this)
-        .setSmallIcon(R.drawable.ic_launcher)
-        .setContentTitle("My notification")
-        .setContentText("Hello World!");
+        new NotificationCompat.Builder(this);
 
     Log.d(LOGTAG, "Setting LED color to: " + red + ", " + green + ", " + blue);
+    Log.d(LOGTAG, "Led on/off for: " + mSingleFlashLength + "ms");
+
     NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
     Notification notif = mBuilder.build();
-    notif.ledARGB = 0xFFFF0000; //Color.rgb(red, green, blue);
+    notif.ledARGB = Color.rgb(red, green, blue);
     notif.flags = notif.flags | Notification.FLAG_SHOW_LIGHTS;
-    notif.ledOnMS = 100;
-    notif.ledOffMS = 100;
+    notif.ledOnMS = mSingleFlashLength;
+    notif.ledOffMS = mSingleFlashLength;
     nm.notify(NOTIFICATION_ID, notif);
   }
 
@@ -181,4 +191,18 @@ public class StainedGlassMainActivity extends FragmentActivity implements
     .setTitle("Settings")
     .setMessage("Settings").show();
   }
+
+  // === [ Private API ] ===========================================================================
+
+  private void refreshFromPreferences() {
+    SharedPreferences prefs =
+        getSharedPreferences("com.glasstowerstudios.stainedglass.prefs", MODE_PRIVATE);
+    mTotalFlashLength = prefs.getInt("totalFlashLength", 100);
+    mSingleFlashLength = prefs.getInt("singleFlashLength", 100);
+  }
+
+  // === [ Private Member Variables ] ==============================================================
+
+  private int mTotalFlashLength;
+  private int mSingleFlashLength;
 }
