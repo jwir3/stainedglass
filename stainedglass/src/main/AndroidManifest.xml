@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="14"
+        android:minSdkVersion="19"
         android:targetSdkVersion="19" />
 
     <application
@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.glasstowerstudios.stainedglass.StainedGlassMainActivity"
+            android:name=".StainedGlassMainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.glasstowerstudios.stainedglass.StainedGlassSettingsActivity"
+            android:name=".StainedGlassSettingsActivity"
             android:label="@string/settings_name">
         </activity>
     </application>

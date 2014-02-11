@@ -1,0 +1,15 @@
+apply plugin: 'android'
+
+dependencies {
+    compile 'com.larswerkman.holocolorpicker:holocolorpicker:1.1'
+    compile fileTree(dir: 'libs', include: '*.jar')
+}
+
+repositories {
+    maven { url 'libs'}
+}
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "19.0.0"
+}

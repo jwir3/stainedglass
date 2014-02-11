@@ -1,9 +1,4 @@
-gen/**
-bin/**
-build/**
-
-.gradle/1.9/taskArtifacts/fileHashes.bin
-.gradle/1.9/taskArtifacts/cache.properties.lock
-.gradle/1.9/taskArtifacts/fileSnapshots.bin
-.gradle/1.9/taskArtifacts/outputFileStates.bin
-.gradle/1.9/taskArtifacts/taskArtifacts.bin
+.gradle
+/local.properties
+/.idea/workspace.xml
+.DS_Store

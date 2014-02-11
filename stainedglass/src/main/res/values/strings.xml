@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">StainedGlass</string>
+    <string name="settings_name">Settings</string>
+    <string name="home_section">Home</string>
+    <string name="color_picker_title_text">Choose Color</string>
+    <string name="turn_on_led">Turn on LED!</string>
+    <string name="singleFlashLabelText">Length of Single Flash (ms)</string>
+    <string name="totalFlashLengthLabelText">Total Length of Notification (ms)</string>
+    <string name="save">Save</string>
+</resources>
