@@ -9,4 +9,9 @@
     <string name="singleFlashLabelText">Length of Single Flash (ms)</string>
     <string name="totalFlashLengthLabelText">Total Length of Notification (ms)</string>
     <string name="save">Save</string>
+    <string name="title_activity_notification_list">NotificationListActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="notification_list_name">Notifications</string>
+
 </resources>

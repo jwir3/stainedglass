@@ -67,10 +67,22 @@ public class StainedGlassMainActivity extends FragmentActivity implements
 
     // Set up the dropdown list navigation in the action bar.
     actionBar.setListNavigationCallbacks(
+        new ArrayAdapter<String>(actionBar.getThemedContext(),
+              android.R.layout.simple_list_item_1,
+              android.R.id.text1,
+              new String[] {
+                  getString(R.string.home_section),
+                  getString(R.string.notification_list_name)}),
+        this);
+
     // Specify a SpinnerAdapter to populate the dropdown list.
-    new ArrayAdapter<String>(actionBar.getThemedContext(),
-        android.R.layout.simple_list_item_1, android.R.id.text1, new String[] {
-            getString(R.string.home_section) }), this);
+//    new ArrayAdapter<String>(actionBar.getThemedContext(),
+//        android.R.layout.simple_list_item_1
+//        android.R.id.text1,
+//        new String[] {
+//            getString(R.string.home_section),
+//            getString(R.string.notification_list_name) }),
+//        this);
 
     setupButtonHandler();
   }
@@ -184,13 +196,6 @@ public class StainedGlassMainActivity extends FragmentActivity implements
     notif.ledOnMS = mSingleFlashLength;
     notif.ledOffMS = mSingleFlashLength;
     nm.notify(NOTIFICATION_ID, notif);
-  }
-
-  public void displaySettings() {
-    new AlertDialog.Builder(this, AlertDialog.THEME_DEVICE_DEFAULT_DARK)
-    .setCancelable(false)
-    .setTitle("Settings")
-    .setMessage("Settings").show();
   }
 
   // === [ Private API ] ===========================================================================

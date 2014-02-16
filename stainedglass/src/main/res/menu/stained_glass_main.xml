@@ -1,6 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
+        android:id="@+id/notification_list_menu_id"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/notification_list_name"/>
+    <item
         android:id="@+id/settings_menu_id"
         android:orderInCategory="100"
         android:showAsAction="never"
