@@ -30,6 +30,13 @@
             android:name="com.glasstowerstudios.stainedglass.NotificationListActivity"
             android:label="@string/title_activity_notification_list" >
         </activity>
+        <service android:name="com.glasstowerstudios.stainedglass.notifications.NotificationInterceptor"
+                 android:label="@string/app_name"
+                 android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

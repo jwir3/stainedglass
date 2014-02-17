@@ -1,16 +1,28 @@
 package com.glasstowerstudios.stainedglass;
 
-import android.app.*;
-import android.content.*;
+import android.app.ActionBar;
+import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.os.*;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.view.*;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.*;
-import android.support.v4.app.*;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
-import com.larswerkman.holocolorpicker.*;
+import com.glasstowerstudios.stainedglass.notifications.NotificationInterceptor;
+import com.larswerkman.holocolorpicker.ColorPicker;
 
 public class StainedGlassMainActivity extends FragmentActivity implements
     ActionBar.OnNavigationListener {
@@ -64,6 +76,8 @@ public class StainedGlassMainActivity extends FragmentActivity implements
     final ActionBar actionBar = getActionBar();
     actionBar.setDisplayShowTitleEnabled(false);
     actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+
+    startNotificationInterceptor();
 
     // Set up the dropdown list navigation in the action bar.
     actionBar.setListNavigationCallbacks(
@@ -173,6 +187,13 @@ public class StainedGlassMainActivity extends FragmentActivity implements
     nm.cancel(NOTIFICATION_ID);
   }
 
+  private void startNotificationInterceptor() {
+    Log.d(LOGTAG, "Clearing all previous notification interceptor services");
+    stopService(new Intent(this, NotificationInterceptor.class));
+    Log.d(LOGTAG, "Starting notification interceptor");
+    startService(new Intent(this, NotificationInterceptor.class));
+  }
+
   private void clearAllNotifications() {
     Log.d(LOGTAG, "Clearing all notifications currently present");
     NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -186,16 +207,20 @@ public class StainedGlassMainActivity extends FragmentActivity implements
     NotificationCompat.Builder mBuilder =
         new NotificationCompat.Builder(this);
 
+    mBuilder.setContentTitle(getString(R.string.app_name));
+    mBuilder.setContentText(getString(R.string.hello_world));
+    mBuilder.setSmallIcon(R.drawable.ic_launcher);
+
     Log.d(LOGTAG, "Setting LED color to: " + red + ", " + green + ", " + blue);
     Log.d(LOGTAG, "Led on/off for: " + mSingleFlashLength + "ms");
 
     NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-    Notification notif = mBuilder.build();
-    notif.ledARGB = Color.rgb(red, green, blue);
-    notif.flags = notif.flags | Notification.FLAG_SHOW_LIGHTS;
-    notif.ledOnMS = mSingleFlashLength;
-    notif.ledOffMS = mSingleFlashLength;
-    nm.notify(NOTIFICATION_ID, notif);
+    Notification notify = mBuilder.build();
+    notify.ledARGB = Color.rgb(red, green, blue);
+    notify.flags = notify.flags | Notification.FLAG_SHOW_LIGHTS;
+    notify.ledOnMS = mSingleFlashLength;
+    notify.ledOffMS = mSingleFlashLength;
+    nm.notify(NOTIFICATION_ID, notify);
   }
 
   // === [ Private API ] ===========================================================================
@@ -211,4 +236,5 @@ public class StainedGlassMainActivity extends FragmentActivity implements
 
   private int mTotalFlashLength;
   private int mSingleFlashLength;
+  private NotificationInterceptor mInterceptor;
 }

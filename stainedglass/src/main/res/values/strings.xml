@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Application Strings -->
     <string name="app_name">StainedGlass</string>
     <string name="settings_name">Settings</string>
     <string name="home_section">Home</string>
@@ -13,5 +14,8 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="notification_list_name">Notifications</string>
+
+    <!-- Service Strings -->
+    <string name="service_name">StainedGlass Notification Interceptor Service</string>
 
 </resources>
