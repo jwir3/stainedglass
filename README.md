@@ -45,3 +45,14 @@ needs a number of things, including (in no particular order):
 
 If you have talents in any of these categories, feel free to connect with me on
 github, or via email at scottj@glasstowerstudios.com.
+
+### Building ###
+StainedGlass was built originally using Eclipse (with the ADT plugin), but after
+deciding to use the HoloColorPicker library, we switched to a gradle-based build
+system. We now use Android Studio for building. You should be able to download
+Android Studio, download the code for StainedGlass, and import it as an Android
+Studio project. You can also run `gradle build`, and you should get a compiled
+APK.
+
+If you have problems building using either Android Studio or `gradle`, feel free
+to file an issue, and I'll help you get started.
