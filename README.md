@@ -56,3 +56,25 @@ APK.
 
 If you have problems building using either Android Studio or `gradle`, feel free
 to file an issue, and I'll help you get started.
+
+### Issues and Bug Stomping ###
+Once you've gotten the build running, feel free to try to take on one of the
+issues we have in our issue queue. If other developers are already commenting
+on the issues, you might want to post your intentions to take a specific issue
+in the comments, in order to prevent another person from doubling-up on work.
+
+If you have a specific item you'd like to fix/add to the list, it's best to
+propose it as an issue first, then allow some discussion (especially if it's a
+big change), so that the overall goals of the project can be maintained.
+
+Our general development workflow is as follows:
+- Fork the repository into your local repositories using github.
+- Clone the repository using `git clone git@github.com:<username>/stainedglass`
+- Create a new branch using `git checkout -b issue-<issue#>`
+- ... stomp bug(s) and create commit(s) ...
+- Push to your github account using `git push origin issue-<issue#>`
+- Create a pull request specifying what you changed and why
+- Wait for review (yeah, this is probably the hardest part)
+- Respond to review requests
+- (Possibly) Fix issues that are found during review
+- Celebrate with all of us when your code is merged into master
