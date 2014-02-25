@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<preference-headers
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <header android:fragment="com.glasstowerstudios.stainedglass.StainedGlassPreferenceActivity$GeneralFragment"
+            android:title="@string/general_title"
+            android:summary="@string/general_desc"/>
+
+    <header android:fragment="com.glasstowerstudios.stainedglass.StainedGlassPreferenceActivity$ServicesFragment"
+            android:title="@string/services_title"
+            android:summary="@string/services_desc" />
+</preference-headers>

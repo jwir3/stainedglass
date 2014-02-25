@@ -5,9 +5,10 @@
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/notification_list_name"/>
+
     <item
         android:id="@+id/settings_menu_id"
-        android:orderInCategory="100"
+        android:orderInCategory="300"
         android:showAsAction="never"
         android:title="@string/settings_name"/>
 </menu>

@@ -7,13 +7,23 @@
     <string name="home_section">Home</string>
     <string name="color_picker_title_text">Choose Color</string>
     <string name="turn_on_led">Turn on LED!</string>
-    <string name="singleFlashLabelText">Length of Single Flash (ms)</string>
-    <string name="totalFlashLengthLabelText">Total Length of Notification (ms)</string>
     <string name="save">Save</string>
     <string name="title_activity_notification_list">NotificationListActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="preferences_name">Preferences</string>
     <string name="notification_list_name">Notifications</string>
+
+    <!-- Settings Strings -->
+    <string name="general_title">General</string>
+    <string name="general_desc">General settings for controlling how StainedGlass functions</string>
+    <string name="totalFlashLengthLabelText">Total Length of Notification (ms)</string>
+    <string name="totalFlashLengthDesc">Number of milliseconds until the notification should cease</string>
+    <string name="singleFlashLengthLabelText">Length of Single Flash (ms)</string>
+    <string name="singleFlashLengthDesc">Number of milliseconds for a single flash of the LED</string>
+
+    <string name="services_title">Services</string>
+    <string name="services_desc">Settings on services that help StainedGlass to be more useful</string>
 
     <!-- Service Strings -->
     <string name="service_name">StainedGlass Notification Interceptor Service</string>

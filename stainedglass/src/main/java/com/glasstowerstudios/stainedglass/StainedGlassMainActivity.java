@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -161,7 +162,7 @@ public class StainedGlassMainActivity extends FragmentActivity implements
     // Inflate the menu; this adds items to the action bar if it is present.
     getMenuInflater().inflate(R.menu.stained_glass_main, menu);
 
-    Intent loadSettingsIntent = new Intent(this, StainedGlassSettingsActivity.class);
+    Intent loadSettingsIntent = new Intent(this, StainedGlassPreferenceActivity.class);
     MenuItem settingsMenuItem = menu.findItem(R.id.settings_menu_id);
     settingsMenuItem.setIntent(loadSettingsIntent);
 
@@ -227,9 +228,9 @@ public class StainedGlassMainActivity extends FragmentActivity implements
 
   private void refreshFromPreferences() {
     SharedPreferences prefs =
-        getSharedPreferences("com.glasstowerstudios.stainedglass.prefs", MODE_PRIVATE);
-    mTotalFlashLength = prefs.getInt("totalFlashLength", 100);
-    mSingleFlashLength = prefs.getInt("singleFlashLength", 100);
+        PreferenceManager.getDefaultSharedPreferences(this);
+    mTotalFlashLength = Integer.parseInt(prefs.getString("totalFlashLength", "100"));
+    mSingleFlashLength = Integer.parseInt(prefs.getString("singleFlashLength", "100"));
   }
 
   // === [ Private Member Variables ] ==============================================================
