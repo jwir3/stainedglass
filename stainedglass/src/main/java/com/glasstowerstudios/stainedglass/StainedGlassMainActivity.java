@@ -25,8 +25,9 @@ import android.widget.LinearLayout;
 import com.glasstowerstudios.stainedglass.notifications.NotificationInterceptor;
 import com.larswerkman.holocolorpicker.ColorPicker;
 
-public class StainedGlassMainActivity extends FragmentActivity implements
-    ActionBar.OnNavigationListener {
+public class StainedGlassMainActivity extends FragmentActivity
+    implements ActionBar.OnNavigationListener,
+               SharedPreferences.OnSharedPreferenceChangeListener {
 
   private static final String LOGTAG = "StainedGlassMainActivity";
 
@@ -78,8 +79,6 @@ public class StainedGlassMainActivity extends FragmentActivity implements
     actionBar.setDisplayShowTitleEnabled(false);
     actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 
-    startNotificationInterceptor();
-
     // Set up the dropdown list navigation in the action bar.
     actionBar.setListNavigationCallbacks(
         new ArrayAdapter<String>(actionBar.getThemedContext(),
@@ -90,48 +89,8 @@ public class StainedGlassMainActivity extends FragmentActivity implements
                   getString(R.string.notification_list_name)}),
         this);
 
-    // Specify a SpinnerAdapter to populate the dropdown list.
-//    new ArrayAdapter<String>(actionBar.getThemedContext(),
-//        android.R.layout.simple_list_item_1
-//        android.R.id.text1,
-//        new String[] {
-//            getString(R.string.home_section),
-//            getString(R.string.notification_list_name) }),
-//        this);
-
     setupButtonHandler();
-  }
-
-  private void setupButtonHandler() {
-    LinearLayout ll = (LinearLayout)findViewById(R.id.topLevelLayout);
-    Button btnTurnOnLed = (Button)ll.findViewById(R.id.turnOnLedButton);
-    btnTurnOnLed.setOnClickListener(new OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        ColorPicker picker = (ColorPicker)findViewById(R.id.picker);
-        mLEDColor = picker.getColor();
-        new AlertDialog.Builder(v.getContext(), AlertDialog.THEME_DEVICE_DEFAULT_DARK)
-        .setCancelable(false)
-        .setTitle("Confirm")
-        .setMessage("Are you sure you want to turn on the LED? (LED will not turn on if screen is on, LED notification will be sent in " + (int)(LED_DELAY/1000f) + " seconds)")
-        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-              mLedHandler.postDelayed(mRunLEDTask, LED_DELAY);
-              dialogInterface.dismiss();
-            }
-        })
-        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-              clearAllNotifications();
-              dialogInterface.dismiss();
-            }
-        })
-        .show();
-      }
-
-    });
+    setupPreferenceListener();
   }
 
   @Override
@@ -182,6 +141,20 @@ public class StainedGlassMainActivity extends FragmentActivity implements
     return true;
   }
 
+  @Override
+  public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+    if (key.equals(getString(R.string.notificationServicePref))) {
+      boolean serviceEnabled = sharedPreferences.getBoolean(key, true);
+      if (serviceEnabled) {
+        startNotificationInterceptor();
+      } else {
+        stopNotificationInterceptor();
+      }
+    }
+  }
+
+  // === [ Private API ] ===========================================================================
+
   private void clearLED() {
     Log.d(LOGTAG, "Clearing LED notification request #" + NOTIFICATION_ID);
     NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -189,10 +162,14 @@ public class StainedGlassMainActivity extends FragmentActivity implements
   }
 
   private void startNotificationInterceptor() {
-    Log.d(LOGTAG, "Clearing all previous notification interceptor services");
-    stopService(new Intent(this, NotificationInterceptor.class));
+    stopNotificationInterceptor();
     Log.d(LOGTAG, "Starting notification interceptor");
     startService(new Intent(this, NotificationInterceptor.class));
+  }
+
+  private void stopNotificationInterceptor() {
+    Log.d(LOGTAG, "Stopping all notification interceptor services");
+    stopService(new Intent(this, NotificationInterceptor.class));
   }
 
   private void clearAllNotifications() {
@@ -224,13 +201,49 @@ public class StainedGlassMainActivity extends FragmentActivity implements
     nm.notify(NOTIFICATION_ID, notify);
   }
 
-  // === [ Private API ] ===========================================================================
-
   private void refreshFromPreferences() {
     SharedPreferences prefs =
         PreferenceManager.getDefaultSharedPreferences(this);
     mTotalFlashLength = Integer.parseInt(prefs.getString("totalFlashLength", "100"));
     mSingleFlashLength = Integer.parseInt(prefs.getString("singleFlashLength", "100"));
+  }
+
+
+  private void setupButtonHandler() {
+    LinearLayout ll = (LinearLayout)findViewById(R.id.topLevelLayout);
+    Button btnTurnOnLed = (Button)ll.findViewById(R.id.turnOnLedButton);
+    btnTurnOnLed.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        ColorPicker picker = (ColorPicker)findViewById(R.id.picker);
+        mLEDColor = picker.getColor();
+        new AlertDialog.Builder(v.getContext(), AlertDialog.THEME_DEVICE_DEFAULT_DARK)
+            .setCancelable(false)
+            .setTitle("Confirm")
+            .setMessage("Are you sure you want to turn on the LED? (LED will not turn on if screen is on, LED notification will be sent in " + (int)(LED_DELAY/1000f) + " seconds)")
+            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+              @Override
+              public void onClick(DialogInterface dialogInterface, int i) {
+                mLedHandler.postDelayed(mRunLEDTask, LED_DELAY);
+                dialogInterface.dismiss();
+              }
+            })
+            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+              @Override
+              public void onClick(DialogInterface dialogInterface, int i) {
+                clearAllNotifications();
+                dialogInterface.dismiss();
+              }
+            })
+            .show();
+      }
+
+    });
+  }
+
+  private void setupPreferenceListener() {
+    SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+    sharedPrefs.registerOnSharedPreferenceChangeListener(this);
   }
 
   // === [ Private Member Variables ] ==============================================================

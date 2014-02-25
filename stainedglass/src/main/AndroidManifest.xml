@@ -38,7 +38,7 @@
 
         <activity
             android:name=".StainedGlassPreferenceActivity"
-            android:label="@string/title_activity_service_control" >
+            android:label="@string/settings_name" >
         </activity>
     </application>
 

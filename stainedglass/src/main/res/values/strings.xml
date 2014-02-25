@@ -24,6 +24,9 @@
 
     <string name="services_title">Services</string>
     <string name="services_desc">Settings on services that help StainedGlass to be more useful</string>
+    <string name="notificationServiceTitle">Notification Listener Service</string>
+    <string name="notificationServiceDesc">A service listening to all notifications on the system to enable settings for each.</string>
+    <string name="notificationServicePref">notification_service_enabled</string>
 
     <!-- Service Strings -->
     <string name="service_name">StainedGlass Notification Interceptor Service</string>

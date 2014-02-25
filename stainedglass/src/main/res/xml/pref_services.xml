@@ -2,8 +2,8 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <SwitchPreference
-        android:key="notification_interceptor_switch"
-        android:title="@string/pref_title_notification_service_enabled"
-        android:summary="@string/pref_summary_notification_service"
+        android:key="@string/notificationServicePref"
+        android:title="@string/notificationServiceTitle"
+        android:summary="@string/notificationServiceDesc"
         android:defaultValue="true" />
 </PreferenceScreen>
