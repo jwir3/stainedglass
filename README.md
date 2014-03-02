@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/jwir3/stainedglass.png?label=ready&title=Ready)](https://waffle.io/jwir3/stainedglass)
 StainedGlass
 ========================
 
