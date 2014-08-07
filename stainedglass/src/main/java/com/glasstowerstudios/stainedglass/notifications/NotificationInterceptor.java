@@ -63,6 +63,7 @@ public class NotificationInterceptor extends NotificationListenerService {
     try {
       NotificationBundle bundle = getBundleFromStatusBarNotification(aNotification);
       mNotificationsSeen.add(bundle);
+      Log.d(LOGTAG, "Saw notification from: " + aNotification.getTag());
     } catch (NotificationTranslationException e) {
       Log.e(LOGTAG, "Error encountered while trying to translate notification", e);
     }

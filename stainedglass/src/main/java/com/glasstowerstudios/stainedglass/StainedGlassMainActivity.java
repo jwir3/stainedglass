@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.glasstowerstudios.stainedglass.notifications.NotificationInterceptor;
+import com.glasstowerstudios.stainedglass.registry.StainedGlassServiceRegistry;
 import com.larswerkman.holocolorpicker.ColorPicker;
 
 public class StainedGlassMainActivity extends FragmentActivity
@@ -72,6 +73,9 @@ public class StainedGlassMainActivity extends FragmentActivity
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+    StainedGlassServiceRegistry.getInstance().init(this);
+
     setContentView(R.layout.activity_stained_glass_main);
 
     // Set up the action bar to show a dropdown list.
@@ -96,6 +100,7 @@ public class StainedGlassMainActivity extends FragmentActivity
   @Override
   public void onStop() {
     super.onPause();
+
     //mLedHandler.removeCallbacks(mClearLEDTask);
   }
 

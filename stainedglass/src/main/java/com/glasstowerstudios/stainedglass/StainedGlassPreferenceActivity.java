@@ -1,9 +1,14 @@
 package com.glasstowerstudios.stainedglass;
 
+import android.app.Activity;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
+import android.preference.SwitchPreference;
 import android.util.Log;
+
+import com.glasstowerstudios.stainedglass.notifications.NotificationInterceptorManager;
 
 import java.util.List;
 
@@ -43,6 +48,36 @@ public class StainedGlassPreferenceActivity extends PreferenceActivity {
       super.onCreate(aSavedBundle);
 
       addPreferencesFromResource(R.xml.pref_services);
+
+      SwitchPreference serviceOnOff = (SwitchPreference) findPreference(getString(R.string.notificationServicePref));
+
+      if (serviceOnOff == null) {
+        // Well, this is awkward.
+        Log.e(LOGTAG, "No switch to turn the service on or off was found...");
+        throw new NullPointerException("No switch to turn the service on or off was found.");
+      }
+
+      serviceOnOff.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        @Override
+        public boolean onPreferenceChange(Preference preference, Object newValue) {
+          boolean switchVal = ((Boolean) newValue).booleanValue();
+          if (preference.getKey().equals(getString(R.string.notificationServicePref))) {
+            Log.d(LOGTAG, "Saw service preference change to: " + switchVal);
+              NotificationInterceptorManager mgr = NotificationInterceptorManager.getInstance();
+              Activity curAct = ServicesFragment.this.getActivity();
+            if (switchVal) {
+              mgr.startService(curAct);
+            } else {
+              mgr.stopService(curAct);
+            }
+
+            return true;
+          }
+
+          Log.w(LOGTAG, "Unable to find preference with key: " + preference.getKey());
+          return false;
+        }
+      });
     }
   }
 
